@@ -1,4 +1,6 @@
 # school
 
-vagrant ssh -c "cd /vagrant/ && python manage.py createsuperuser"
-vagrant ssh -c "cd /vagrant/ && python manage.py runserver"
+```sh
+vagrant ssh -c "cd /vagrant/ && python3 manage.py runserver 0.0.0.0:8000"
+vagrant ssh -c "cd /vagrant/ && python3 manage.py createsuperuser"
+```
