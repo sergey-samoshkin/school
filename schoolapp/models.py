@@ -7,7 +7,7 @@ START_MONTH = 9
 
 
 class School(models.Model):
-    short_name = models.CharField('Краткое название', max_length=100, unique=True)
+    short_name = models.CharField('Краткое название', max_length=100, unique=True, help_text='Например "№30"')
     full_name = models.CharField('Полное официальное название', max_length=300, unique=True)
 
     class Meta:
@@ -45,3 +45,14 @@ class SchoolClass(models.Model):
 
     def __str__(self):
         return "%s%s" % (self.number(), self.letter)
+
+    def add_home_work(self, description):
+        hw = HomeWork(schoolclass=self, description=description)
+        hw.save()
+
+
+class HomeWork(models.Model):
+    schoolclass = models.ForeignKey(SchoolClass)
+    description = models.CharField('Описание', max_length=200)
+    created_at = models.DateTimeField('Время добавления', default=timezone.now)
+

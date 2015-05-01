@@ -1,0 +1,20 @@
+<h1>Школа {{ school }}</h1>
+<h2>Класс {{ schoolclass }}</h2>
+
+
+<h3>Новое домашнее задание</h3>
+<form action="{% url 'school:add_hw' school.id schoolclass.id %}" method="post">
+    {% csrf_token %}
+    Описание: <input type="text" name="description" value="" /><br>
+    {% if error_message %}<p style="color: red;"><strong>{{ error_message }}</strong></p>{% endif %}
+    <input type="file" name="file" /><br>
+    <input type="submit" value="Сохранить" />
+</form>
+
+
+<h3>Домашнее задание</h3>
+<ul>
+{% for hw in home_works %}
+    <li>{{ hw.created_at }} <strong>{{ hw.description }}</strong></li>
+{% endfor %}
+</ul>
