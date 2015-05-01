@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('start_year', models.PositiveIntegerField(default=2015, verbose_name='Год')),
                 ('letter', models.CharField(default='A', verbose_name='Буква', max_length=3)),
-                ('school', models.ForeignKey(to='mainapp.School')),
+                ('school', models.ForeignKey(to='schoolapp.School')),
             ],
         ),
     ]
