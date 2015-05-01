@@ -71,9 +71,9 @@ Vagrant.configure(2) do |config|
 
     sudo pip3 install django psycopg2
 
-    sudo -u postgres createdb school
+    sudo -u postgres createdb djangoproject
     sudo -u postgres psql -c "CREATE USER django WITH PASSWORD 'n89ghinrv98rn';"
-    sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE school to django;"
+    sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE djangoproject to django;"
 
     cd /vagrant/ && python3 manage.py migrate
   SHELL

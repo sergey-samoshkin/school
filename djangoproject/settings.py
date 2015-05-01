@@ -48,9 +48,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'school.urls'
+ROOT_URLCONF = 'djangoproject.urls'
 
-WSGI_APPLICATION = 'school.wsgi.application'
+WSGI_APPLICATION = 'djangoproject.wsgi.application'
 
 
 # Database
@@ -59,7 +59,7 @@ WSGI_APPLICATION = 'school.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'school',
+        'NAME': 'djangoproject',
         'HOST': '127.0.0.1',
         'USER': 'django',
         'PASSWORD': 'n89ghinrv98rn',
