@@ -1,5 +1,5 @@
 from django.db import models
-from datetime import date
+from django.utils import timezone
 
 
 # Начало учебного года в сентябре
@@ -7,8 +7,8 @@ START_MONTH = 9
 
 
 class School(models.Model):
-    short_name = models.CharField('Краткое название', max_length=100)
-    full_name = models.CharField('Полное официальное название', max_length=300)
+    short_name = models.CharField('Краткое название', max_length=100, unique=True)
+    full_name = models.CharField('Полное официальное название', max_length=300, unique=True)
 
     class Meta:
         verbose_name = 'Школа'
@@ -20,7 +20,7 @@ class School(models.Model):
 
 class SchoolClass(models.Model):
     school = models.ForeignKey(School)
-    start_year = models.PositiveIntegerField('Год начала обучения', default=date.today().year)
+    start_year = models.PositiveIntegerField('Год начала обучения', default=timezone.now().year)
     letter = models.CharField('Буква класса', default='A', max_length=3)
     skip_4th_grade = models.BooleanField('Класс пропустит 4ый', default=True)
     graduate_at = models.PositiveSmallIntegerField('Номер в год выпуска', default=11)
@@ -30,7 +30,7 @@ class SchoolClass(models.Model):
         verbose_name_plural = 'Классы'
 
     def number(self):
-        today = date.today()
+        today = timezone.now().date()
         result = today.year - self.start_year
         if today.month >= START_MONTH:
             result += 1
