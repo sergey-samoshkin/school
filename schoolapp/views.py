@@ -1,6 +1,8 @@
 # Create your views here.
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, Http404
 from django.views import generic
+from django.http import HttpResponse
+import mimetypes, os
 
 from .models import School, SchoolClass
 
@@ -45,9 +47,33 @@ class SchoolClassView(generic.DetailView):
 def add_hw(request, school_id, class_id):
     obj = get_object_or_404(SchoolClass, pk=class_id, school=school_id)
     if not request.POST['description']:
-        return render(request, 'school/class.html', {
-            'schoolclass': obj, 'school': obj.school, 'error_message': 'Требуется описание'
+        return render(request, 'schoolapp/schoolclass_detail.html', {
+            'schoolclass': obj, 'error_message': 'Требуется описание'
         })
-    obj.add_home_work(request.POST['description'])
+    obj.add_home_work(request.POST['description'], request.FILES.get('file'))
     return redirect('school:schoolclass', obj.school.id, obj.id)
+
+
+def download_hw(request, school_id, class_id, hw_id):
+    obj = get_object_or_404(SchoolClass, pk=class_id, school=school_id)
+    hw = obj.homework_set.filter(pk=hw_id)
+    if len(hw) > 0:
+        f = hw[0].file
+        file_name = os.path.basename(f.name)
+
+        fp = open(f.path, 'rb')
+        response = HttpResponse(fp.read())
+        fp.close()
+        mime_type, encoding = mimetypes.guess_type(file_name)
+        if mime_type is None:
+            mime_type = 'application/octet-stream'
+        response['Content-Type'] = mime_type
+        response['Content-Length'] = str(os.stat(f.path).st_size)
+        if encoding is not None:
+            response['Content-Encoding'] = encoding
+
+        response['Content-Disposition'] = 'attachment; filename=%s' % file_name
+        return response
+    else:
+        raise Http404("Homework doesn't exists")
 

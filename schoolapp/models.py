@@ -46,8 +46,8 @@ class SchoolClass(models.Model):
     def __str__(self):
         return "%s%s" % (self.number(), self.letter)
 
-    def add_home_work(self, description):
-        hw = HomeWork(schoolclass=self, description=description)
+    def add_home_work(self, description, file=None):
+        hw = HomeWork(schoolclass=self, description=description, file=file)
         hw.save()
 
 
@@ -55,4 +55,5 @@ class HomeWork(models.Model):
     schoolclass = models.ForeignKey(SchoolClass)
     description = models.CharField('Описание', max_length=200)
     created_at = models.DateTimeField('Время добавления', default=timezone.now)
+    file = models.FileField('Файл', null=True, blank=True, upload_to='hw_files')
 

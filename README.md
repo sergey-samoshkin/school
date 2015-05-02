@@ -21,3 +21,19 @@ vagrant ssh -c "cd /vagrant/ && python3 manage.py createsuperuser"
 ```sh
 vagrant ssh -c "cd /vagrant/ && python3 manage.py runserver 0.0.0.0:8000"
 ```
+
+Сайт:
+http://localhost:8080/
+
+Админка сайта:
+http://localhost:8080/admin
+
+Получение обновлений
+```sh
+git pull
+```
+
+Применение обновлений для базы данных
+```sh
+vagrant ssh -c "cd /vagrant/ && python3 manage.py migrate"
+```

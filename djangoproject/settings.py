@@ -100,3 +100,5 @@ TEMPLATES = [
         },
     },
 ]
+
+MEDIA_ROOT = '/vagrant/uploaded_files/'
