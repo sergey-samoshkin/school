@@ -1,5 +1,11 @@
-<h1>{{ school.full_name }}</h1>
+{% extends 'schoolapp/base.html' %}
 
-<p>
-    <a href="{% url 'school:classes' school.id %}">Классы</a>
-</p>
+{% block title %}{{ school.full_name }}{% endblock %}
+
+{% block content %}
+    <h1>{{ school.full_name }}</h1>
+
+    <p>
+        <a href="{% url 'school:classes' school.id %}">Классы</a>
+    </p>
+{% endblock %}

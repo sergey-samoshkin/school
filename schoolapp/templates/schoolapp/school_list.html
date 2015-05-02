@@ -1,9 +1,15 @@
-{% if school_list %}
-    <ul>
-    {% for school in school_list %}
-        <li><a href="{% url 'school:school' school.id %}">{{ school.full_name }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>Школ нет</p>
-{% endif %}
+{% extends 'schoolapp/base.html' %}
+
+{% block title %}Школы{% endblock %}
+
+{% block content %}
+    {% if school_list %}
+        <ul>
+        {% for school in school_list %}
+            <li><a href="{% url 'school:school' school.id %}">{{ school.full_name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Школ нет</p>
+    {% endif %}
+{% endblock %}
