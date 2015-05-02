@@ -1,9 +1,0 @@
-{% if class_list %}
-    <ul>
-    {% for cl in class_list %}
-        <li><a href="{% url 'school:schoolclass' school.id cl.id %}">{{ cl }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>Классов нет</p>
-{% endif %}
