@@ -3,12 +3,27 @@
 {% block title %}Вход{% endblock %}
 
 {% block content %}
-    <form action="{% url 'school:do_login' %}" method="post">
+
+    <div class="container col-md-4"></div>
+    <div class="container col-md-4">
+      <form class="form-signin" action="{% url 'school:do_login' %}" method="post">
         <input type="hidden" name="next" value="{{ next }}" /><br>
         {% csrf_token %}
-        Имя: <input type="text" name="username" value="" /><br>
-        Пароль: <input type="password" name="password" value="" /><br>
-        {% if error_message %}<p style="color: red;"><strong>{{ error_message }}</strong></p>{% endif %}
-        <input type="submit" value="Отправить" />
-    </form>
+        <h2 class="form-signin-heading">Войдите</h2>
+        <label for="inputUserName" class="sr-only">Имя пользователя</label>
+        <input name="username" type="text" id="inputUserName" class="form-control" placeholder="Имя пользователя" required autofocus>
+        <label for="inputPassword" class="sr-only">Пароль</label>
+        <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Пароль" required>
+    {% if error_message %}
+        <div class="alert alert-danger" role="alert">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+          <span class="sr-only">Ошибка:</span>
+          {{ error_message }}
+        </div>
+    {% endif %}
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Отправить</button>
+      </form>
+    </div>
+    <div class="container col-md-4"></div>
+
 {% endblock %}
