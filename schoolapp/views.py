@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404, Http404
 from django.views import generic
 from django.http import HttpResponse
 import mimetypes, os
+from django.contrib.auth import authenticate, login
 
 from .models import School, SchoolClass
 
@@ -50,7 +51,11 @@ def add_hw(request, school_id, class_id):
         return render(request, 'schoolapp/schoolclass_detail.html', {
             'schoolclass': obj, 'error_message': 'Требуется описание'
         })
-    obj.add_home_work(request.POST['description'], request.FILES.get('file'))
+    if not request.POST['discipline']:
+        return render(request, 'schoolapp/schoolclass_detail.html', {
+            'schoolclass': obj, 'error_message': 'Требуется указать предмет'
+        })
+    obj.add_home_work(request.POST['description'], request.POST['discipline'], request.FILES.get('file'))
     return redirect('school:schoolclass', obj.school.id, obj.id)
 
 
@@ -76,4 +81,31 @@ def download_hw(request, school_id, class_id, hw_id):
         return response
     else:
         raise Http404("Homework doesn't exists")
+
+
+def login_view(request):
+    next = request.GET.get('next', '/')
+    return render(request, 'schoolapp/login.html', { 'next': next })
+
+
+def do_login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        next = request.POST['next']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return redirect(next)
+            else:
+                return render(request, 'schoolapp/login.html', {
+                    'next': next, 'error_message': 'Пользователь заблокирован'
+                })
+        else:
+            return render(request, 'schoolapp/login.html', {
+                'next': next, 'error_message': 'Неверный логин или пароль'
+            })
+    else:
+        return render(request, 'schoolapp/login.html', {})
 

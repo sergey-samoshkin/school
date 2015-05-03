@@ -10,6 +10,7 @@
     <h3>Новое домашнее задание</h3>
     <form action="{% url 'school:add_hw' schoolclass.school.id schoolclass.id %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
+        Предмет: <input type="text" name="discipline" value="" /><br>
         Описание: <input type="text" name="description" value="" /><br>
         {% if error_message %}<p style="color: red;"><strong>{{ error_message }}</strong></p>{% endif %}
         <input type="file" name="file" /><br>

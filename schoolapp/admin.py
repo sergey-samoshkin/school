@@ -22,6 +22,7 @@ class SchoolAdmin(admin.ModelAdmin):
 class ClassAdmin(admin.ModelAdmin):
     fieldsets = [
         (None,               {'fields': ['school', 'start_year', 'letter']}),
+        ('Доступ',           {'fields': ['login_user']}),
         ('Дополнительно',    {'fields': ['skip_4th_grade', 'graduate_at'], 'classes': ['collapse']}),
     ]
     list_display = ('__str__', 'start_year', 'number', 'letter',)
