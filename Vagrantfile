@@ -76,5 +76,6 @@ Vagrant.configure(2) do |config|
     sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE djangoproject to django;"
 
     cd /vagrant/ && python3 manage.py migrate
+    cd /vagrant/ && python3 manage.py loaddata
   SHELL
 end

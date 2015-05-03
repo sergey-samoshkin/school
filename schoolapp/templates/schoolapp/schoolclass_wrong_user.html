@@ -1,0 +1,12 @@
+{% extends 'schoolapp/base.html' %}
+
+{% block title %}Класс {{ schoolclass }}{% endblock %}
+
+{% block content %}
+    <h1>Школа {{ schoolclass.school }}</h1>
+    <h2>Класс {{ schoolclass }}</h2>
+
+    <p>
+        Пользователь {{ request.user }} не может просматривать эту страницу
+    </p>
+{% endblock %}

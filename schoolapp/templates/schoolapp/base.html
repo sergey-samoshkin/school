@@ -19,7 +19,14 @@
     <![endif]-->
   </head>
   <body>
-    [{{ request.user.get_profile }}]
+    [
+        Пользователь: {{ request.user }}
+        {% if request.user.id %}
+            <a href="{% url 'school:do_logout' %}">Выйти</a>
+        {% else %}
+            <a href="{% url 'school:login' %}">Войти</a>
+        {% endif %}
+    ]
 
     {% block content %}{% endblock %}
 

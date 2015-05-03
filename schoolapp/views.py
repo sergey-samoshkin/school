@@ -3,23 +3,23 @@ from django.shortcuts import render, redirect, get_object_or_404, Http404
 from django.views import generic
 from django.http import HttpResponse
 import mimetypes, os
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import permission_required
+
 
 from .models import School, SchoolClass
 
 
 class IndexView(generic.ListView):
+
     def get_queryset(self):
         return School.objects.all()
 
-
-#def index(request):
-#    obj_list = School.objects.all()
-#     if len(obj_list) == 1:
-#         return redirect('school:school', school_id=obj_list[0].id)
-#     return render(request, 'school/list.html', RequestContext(request, {
-#         'school_list': obj_list
-#     }))
+    def dispatch(self, request, *args, **kwargs):
+        obj_list = self.get_queryset()
+        if len(obj_list) == 1:
+            return redirect('school:school', pk=obj_list[0].id)
+        return super(IndexView, self).dispatch(request, *args, **kwargs)
 
 
 class ClassList(generic.ListView):
@@ -44,7 +44,16 @@ class SchoolClassView(generic.DetailView):
         context['home_works'] = self.get_object().homework_set.order_by('-created_at')[:20]
         return context
 
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.has_perm('schoolapp.add_homework'):
+            return super(SchoolClassView, self).dispatch(request, *args, **kwargs)
 
+        if not self.get_object().login_user or self.get_object().login_user.id != request.user.id:
+            return render(request, 'schoolapp/schoolclass_wrong_user.html', { 'schoolclass': self.get_object() })
+        return super(SchoolClassView, self).dispatch(request, *args, **kwargs)
+
+
+@permission_required('school.add_homework')
 def add_hw(request, school_id, class_id):
     obj = get_object_or_404(SchoolClass, pk=class_id, school=school_id)
     if not request.POST['description']:
@@ -55,12 +64,21 @@ def add_hw(request, school_id, class_id):
         return render(request, 'schoolapp/schoolclass_detail.html', {
             'schoolclass': obj, 'error_message': 'Требуется указать предмет'
         })
-    obj.add_home_work(request.POST['description'], request.POST['discipline'], request.FILES.get('file'))
+    obj.add_home_work(
+        request.POST['description'],
+        request.POST['discipline'],
+        request.user,
+        request.FILES.get('file')
+    )
     return redirect('school:schoolclass', obj.school.id, obj.id)
 
 
 def download_hw(request, school_id, class_id, hw_id):
     obj = get_object_or_404(SchoolClass, pk=class_id, school=school_id)
+
+    if not obj.login_user or obj.login_user.id != request.user.id:
+        return render(request, 'schoolapp/schoolclass_wrong_user.html', { 'schoolclass': obj })
+
     hw = obj.homework_set.filter(pk=hw_id)
     if len(hw) > 0:
         f = hw[0].file
@@ -109,3 +127,7 @@ def do_login_view(request):
     else:
         return render(request, 'schoolapp/login.html', {})
 
+
+def do_logout_view(request):
+    logout(request)
+    return redirect('school:index')

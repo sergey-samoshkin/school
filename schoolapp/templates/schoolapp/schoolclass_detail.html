@@ -1,12 +1,13 @@
 {% extends 'schoolapp/base.html' %}
 
-{% block title %}Классы{% endblock %}
+{% block title %}Класс {{ schoolclass }}{% endblock %}
 
 {% block content %}
     <h1>Школа {{ schoolclass.school }}</h1>
     <h2>Класс {{ schoolclass }}</h2>
 
 
+{% if perms.schoolapp.add_homework %}
     <h3>Новое домашнее задание</h3>
     <form action="{% url 'school:add_hw' schoolclass.school.id schoolclass.id %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
@@ -16,12 +17,17 @@
         <input type="file" name="file" /><br>
         <input type="submit" value="Сохранить" />
     </form>
+{% endif %}
 
 
     <h3>Домашнее задание</h3>
     <ul>
     {% for hw in home_works %}
-        <li>{{ hw.created_at }} <strong>{{ hw.description }}</strong>
+        <li>
+            {{ hw.created_at }}
+            <span style="color: #c12e2a">{{ hw.created_by }}</span>
+            <span style="color: #265a88">{{ hw.discipline }}</span>
+            <strong>{{ hw.description }}</strong>
             {% if hw.file %}
                 <a href="{% url 'school:download_hw' schoolclass.school.id schoolclass.id hw.id %}">Скачать</a>
             {% endif %}

@@ -9,7 +9,7 @@ class ClassInline(admin.TabularInline):
     model = SchoolClass
     verbose_name = 'Класс'
     verbose_name_plural = 'Классы'
-    fields = ['start_year', 'letter']
+    fields = ['start_year', 'letter', 'login_user']
     extra = 3
 
 

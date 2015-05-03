@@ -37,3 +37,9 @@ git pull
 ```sh
 vagrant ssh -c "cd /vagrant/ && python3 manage.py migrate"
 ```
+
+Очистка базы данных
+```sh
+vagrant ssh -c "cd /vagrant/ && python3 manage.py migrate schoolapp zero"
+```
+

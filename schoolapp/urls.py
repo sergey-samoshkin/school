@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^$', views.IndexView.as_view(), name='index'),
     url(r'^login/$', views.login_view, name='login'),
     url(r'^login/do/$', views.do_login_view, name='do_login'),
+    url(r'^logout/do/$', views.do_logout_view, name='do_logout'),
     url(r'(?P<pk>[0-9]+)/classes/$', views.ClassList.as_view(), name='classes'),
     url(
         r'(?P<school_id>[0-9]+)/class/(?P<pk>[0-9]+)/$',

@@ -24,7 +24,7 @@ class SchoolClass(models.Model):
     letter = models.CharField('Буква класса', default='A', max_length=3)
     skip_4th_grade = models.BooleanField('Класс пропустит 4ый', default=True)
     graduate_at = models.PositiveSmallIntegerField('Номер в год выпуска', default=11)
-    login_user = models.ForeignKey(User, null=True, blank=True)
+    login_user = models.ForeignKey(User)
 
     class Meta:
         verbose_name = 'Класс'
@@ -47,8 +47,14 @@ class SchoolClass(models.Model):
     def __str__(self):
         return "%s%s" % (self.number(), self.letter)
 
-    def add_home_work(self, description, discipline, file=None):
-        hw = HomeWork(schoolclass=self, description=description, discipline=discipline, file=file)
+    def add_home_work(self, description, discipline, user, file=None):
+        hw = HomeWork(
+            schoolclass=self,
+            description=description,
+            discipline=discipline,
+            created_by=user,
+            file=file,
+        )
         hw.save()
 
 
@@ -57,6 +63,6 @@ class HomeWork(models.Model):
     discipline = models.CharField('Предмет', max_length=50, default='')
     description = models.CharField('Описание', max_length=200)
     created_at = models.DateTimeField('Время добавления', default=timezone.now)
-    created_by = models.ForeignKey(User, null=True, blank=True)
+    created_by = models.ForeignKey(User)
     file = models.FileField('Файл', null=True, blank=True, upload_to='hw_files')
 
