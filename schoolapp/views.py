@@ -53,7 +53,7 @@ class SchoolClassView(generic.DetailView):
         return super(SchoolClassView, self).dispatch(request, *args, **kwargs)
 
 
-@permission_required('school.add_homework')
+@permission_required('schoolapp.add_homework')
 def add_hw(request, school_id, class_id):
     obj = get_object_or_404(SchoolClass, pk=class_id, school=school_id)
     if not request.POST['description']:
