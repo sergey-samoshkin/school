@@ -57,6 +57,11 @@ class SchoolClass(models.Model):
         )
         hw.save()
 
+    def remove_home_work(self, hw):
+        if hw.file:
+            hw.file.delete()
+        hw.delete()
+
 
 class HomeWork(models.Model):
     schoolclass = models.ForeignKey(SchoolClass)

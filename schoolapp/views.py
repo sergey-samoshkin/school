@@ -41,7 +41,7 @@ class SchoolClassView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(SchoolClassView, self).get_context_data(**kwargs)
-        context['home_works'] = self.get_object().homework_set.order_by('-created_at')[:20]
+        context['home_works'] = self.get_object().homework_set.order_by('-created_at')[:100]
         return context
 
     def dispatch(self, request, *args, **kwargs):
@@ -73,11 +73,24 @@ def add_hw(request, school_id, class_id):
     return redirect('school:schoolclass', obj.school.id, obj.id)
 
 
+@permission_required('schoolapp.delete_homework')
+def remove_hw(request, school_id, class_id, hw_id):
+    obj = get_object_or_404(SchoolClass, pk=class_id, school=school_id)
+    hw = obj.homework_set.filter(pk=hw_id)
+    if len(hw) == 0:
+        raise Http404("Homework doesn't exists")
+    else:
+        hw = hw[0]
+    obj.remove_home_work(hw)
+    return redirect('school:schoolclass', obj.school.id, obj.id)
+
+
 def download_hw(request, school_id, class_id, hw_id):
     obj = get_object_or_404(SchoolClass, pk=class_id, school=school_id)
 
     if not obj.login_user or obj.login_user.id != request.user.id:
-        return render(request, 'schoolapp/schoolclass_wrong_user.html', { 'schoolclass': obj })
+        if not request.user.has_perm('schoolapp.add_homework'):
+            return render(request, 'schoolapp/schoolclass_wrong_user.html', { 'schoolclass': obj })
 
     hw = obj.homework_set.filter(pk=hw_id)
     if len(hw) > 0:

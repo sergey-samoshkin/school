@@ -21,6 +21,11 @@ urlpatterns = [
         name='add_hw'
     ),
     url(
+        r'(?P<school_id>[0-9]+)/class/(?P<class_id>[0-9]+)/remove_hw/(?P<hw_id>[0-9]+)$',
+        login_required(views.remove_hw),
+        name='remove_hw'
+    ),
+    url(
         r'(?P<school_id>[0-9]+)/class/(?P<class_id>[0-9]+)/download_hw/(?P<hw_id>[0-9]+)$',
         login_required(views.download_hw),
         name='download_hw'

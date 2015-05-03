@@ -31,6 +31,9 @@
             {% if hw.file %}
                 <a href="{% url 'school:download_hw' schoolclass.school.id schoolclass.id hw.id %}">Скачать</a>
             {% endif %}
+            {% if perms.schoolapp.delete_homework %}
+                <a style="color: red;" onclick="if(!confirm('Уверены?')){ event.preventDefault(); return false; }" href="{% url 'school:remove_hw' schoolclass.school.id schoolclass.id hw.id %}">Удалить</a>
+            {% endif %}
         </li>
     {% endfor %}
     </ul>
