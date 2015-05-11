@@ -101,5 +101,5 @@ TEMPLATES = [
     },
 ]
 
-MEDIA_ROOT = '/vagrant/uploaded_files/'
+MEDIA_ROOT = '/tmp/uploaded_files/'
 LOGIN_URL = '/school/login/'

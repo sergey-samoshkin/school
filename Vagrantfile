@@ -65,16 +65,18 @@ Vagrant.configure(2) do |config|
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
-  config.vm.provision "shell", inline: <<-SHELL
-    sudo apt-get update
-    sudo apt-get install -y python3-pip postgresql postgresql-server-dev-9.3
+  config.vm.provision "shell", privileged: true, inline: <<-SHELL
+    apt-get update
+    apt-get install -y python3 python3-pip postgresql postgresql-server-dev-9.3 git
 
-    sudo pip3 install django psycopg2
+    pip3 install django psycopg2
 
     sudo -u postgres createdb djangoproject
     sudo -u postgres psql -c "CREATE USER django WITH PASSWORD 'n89ghinrv98rn';"
     sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE djangoproject to django;"
 
-    cd /vagrant/ && python3 manage.py migrate
+    cd /vagrant/
+    python3 manage.py migrate auth
+    python3 manage.py migrate
   SHELL
 end
