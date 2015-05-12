@@ -6,7 +6,9 @@
     <h1>Школа {{ schoolclass.school }}</h1>
     <h2>Класс {{ schoolclass }}</h2>
 
-    <p>
-        Пользователь {{ request.user }} не может просматривать эту страницу
-    </p>
+    <div class="alert alert-danger" role="alert">
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <span class="sr-only">Ошибка:</span>
+      Пользователь {{ request.user }} не может просматривать эту страницу
+    </div>
 {% endblock %}

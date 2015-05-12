@@ -25,7 +25,7 @@ class ClassAdmin(admin.ModelAdmin):
         ('Доступ',           {'fields': ['login_user']}),
         ('Дополнительно',    {'fields': ['skip_4th_grade', 'graduate_at'], 'classes': ['collapse']}),
     ]
-    list_display = ('__str__', 'start_year', 'number', 'letter',)
+    list_display = ('__str__', 'start_year', 'number', 'letter', 'login_user')
     list_filter = ['start_year', 'letter',]
 
 
