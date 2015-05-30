@@ -123,7 +123,7 @@ def do_login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-        next = request.POST['next']
+        next = request.POST['next'] or request.META.get('HTTP_REFERER', None) or '/'
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:

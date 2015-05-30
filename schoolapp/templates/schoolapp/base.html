@@ -4,12 +4,14 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block metas %}{% endblock %}
 
-    <title>{% block title %}{% endblock %}</title>
+    <title>{% block title %}Base{% endblock %}</title>
 
     {% load staticfiles %}
 
     <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    {% block styles %}{% endblock %}
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -17,22 +19,13 @@
       <script src="{% static 'lib/html5shiv.min.js' %}"></script>
       <script src="{% static 'lib/respond.min.js' %}"></script>
     <![endif]-->
+    {% block head_scripts %}{% endblock %}
   </head>
   <body>
-    [
-        Пользователь: {{ request.user }}
-        {% if request.user.id %}
-            <a href="{% url 'school:do_logout' %}">Выйти</a>
-        {% else %}
-            <a href="{% url 'school:login' %}">Войти</a>
-        {% endif %}
-    ]
-
-    <div class="container col-md-3"></div>
-    <div class="container col-md-6">{% block content %}{% endblock %}</div>
-    <div class="container col-md-3"></div>
+    {% block body %}{% endblock %}
 
     <script src="{% static 'lib/jquery-2.1.3.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    {% block bottom_scripts %}{% endblock %}
   </body>
 </html>
