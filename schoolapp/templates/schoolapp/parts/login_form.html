@@ -1,0 +1,38 @@
+<form
+    class="{% block form_class %}form-signin{% endblock %}"
+    action="{% url 'school:do_login' %}"
+    method="post"
+>
+  <input type="hidden" name="next" value="{{ next }}">
+  {% csrf_token %}
+
+  {% block legend %}
+    <legend class="form-signin-heading">Войдите</legend>
+  {% endblock %}
+
+  <div class="form-group">
+    {% block name_label %}
+      <label for="inputUserName" class="sr-only">Имя пользователя</label>
+    {% endblock %}
+    <input name="username" type="text" id="inputUserName" class="form-control" placeholder="Имя пользователя" required autofocus>
+  </div>
+
+  <div class="form-group">
+    {% block password_label %}
+      <label for="inputPassword" class="sr-only">Пароль</label>
+    {% endblock %}
+    <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Пароль" required>
+  </div>
+
+  {% block error %}
+    {% if error_message %}
+      <div class="alert alert-danger" role="alert">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only">Ошибка:</span>
+        {{ error_message }}
+      </div>
+    {% endif %}
+  {% endblock %}
+
+  <button class="{% block button_class %}btn btn-lg btn-primary btn-block{% endblock %}" type="submit">Отправить</button>
+</form>
