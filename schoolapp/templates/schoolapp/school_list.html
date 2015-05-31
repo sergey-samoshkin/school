@@ -4,12 +4,29 @@
 
 {% block content %}
     {% if school_list %}
-        <ul>
-        {% for school in school_list %}
-            <li><a href="{% url 'school:school' school.id %}">{{ school.full_name }}</a></li>
-        {% endfor %}
-        </ul>
+      <div class="row">
+        <div class="col-md-12">
+          <legend>В системе зарегистрировано несколько школ</legend>
+        </div>
+      </div>
+      <div class="row well">
+        <div class="col-md-12">
+          <ul>
+            {% for school in school_list %}
+              <li>
+                <a href="{% url 'school:school' school.id %}">
+                  <h4>{{ school.full_name }}</h4>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
     {% else %}
-        <p>Школ нет</p>
+      <div class="row">
+        <div class="col-md-12">
+          <legend>Школ нет</legend>
+        </div>
+      </div>
     {% endif %}
 {% endblock %}

@@ -26,7 +26,10 @@ class ClassList(generic.ListView):
     def get_queryset(self):
         obj = get_object_or_404(School, pk=self.kwargs['pk'])
         return obj.schoolclass_set.all()
-
+    def get_context_data(self, **kwargs):
+        context = super(ClassList, self).get_context_data(**kwargs)
+        context['school'] = get_object_or_404(School, pk=self.kwargs['pk'])
+        return context
 
 class SchoolView(generic.DetailView):
     model = School
@@ -41,6 +44,7 @@ class SchoolClassView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(SchoolClassView, self).get_context_data(**kwargs)
+        context['school'] = self.get_object().school
         context['home_works'] = self.get_object().homework_set.order_by('-created_at')[:100]
         return context
 
@@ -49,7 +53,10 @@ class SchoolClassView(generic.DetailView):
             return super(SchoolClassView, self).dispatch(request, *args, **kwargs)
 
         if not self.get_object().login_user or self.get_object().login_user.id != request.user.id:
-            return render(request, 'schoolapp/schoolclass_wrong_user.html', { 'schoolclass': self.get_object() })
+            return render(request, 'schoolapp/schoolclass_wrong_user.html', {
+                'schoolclass': self.get_object(),
+                'school': self.get_object().school,
+            })
         return super(SchoolClassView, self).dispatch(request, *args, **kwargs)
 
 

@@ -2,88 +2,109 @@
 
 {% block title %}Класс {{ schoolclass }}{% endblock %}
 
-{% block content %}
-    <h1>Школа {{ schoolclass.school }}</h1>
-    <h2>Класс {{ schoolclass }}</h2>
+{% block breadcrumbs %}
+  <li><a href="{% url 'school:index' %}">Школа</a></li>
+  <li><a href="{% url 'school:school' school.id %}">{{ school }}</a></li>
+  <li><a href="{% url 'school:classes' school.id %}">Класс</a></li>
+  <li><a href="{% url 'school:schoolclass' school.id schoolclass.id %}">{{ schoolclass }}</a></li>
+{% endblock %}
 
-    {% if perms.schoolapp.add_homework %}
-    <h3>Новое домашнее задание</h3>
-    <form class="form-horizontal" action="{% url 'school:add_hw' schoolclass.school.id schoolclass.id %}" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="form-group">
+{% block content %}
+  {% if perms.schoolapp.add_homework %}
+    <div class="row well">
+      <div class="col-md-12">
+        <legend>Добавление нового домашнего задания</legend>
+        <form
+            class="form-horizontal"
+            action="{% url 'school:add_hw' school.id schoolclass.id %}"
+            method="post"
+            enctype="multipart/form-data"
+        >
+          {% csrf_token %}
+          <div class="form-group">
             <label for="inputDiscipline" class="col-sm-2 control-label">Предмет</label>
             <div class="col-sm-10">
-                <input type="text" name="discipline" class="form-control" id="inputDiscipline">
+              <input required="true" type="text" name="discipline" class="form-control" id="inputDiscipline">
             </div>
-        </div>
-        <div class="form-group">
+          </div>
+          <div class="form-group">
             <label for="inputDescription" class="col-sm-2 control-label">Задание</label>
             <div class="col-sm-10">
-                <textarea name="description" class="form-control" rows="3" id="inputDescription"></textarea>
+              <textarea required="true" name="description" class="form-control" rows="3" id="inputDescription"></textarea>
             </div>
-        </div>
-        <div class="form-group">
+          </div>
+          <div class="form-group">
             <label for="inputFile" class="col-sm-2 control-label">Файл</label>
             <div class="col-sm-10">
-                <input type="file" name="file" id="inputFile">
-                <p class="help-block">Можно добавить файл, но необязательно</p>
+              <input type="file" name="file" id="inputFile">
+              <p class="help-block">Можно добавить файл, но необязательно</p>
             </div>
-        </div>
+          </div>
 
-        {% if error_message %}
-        <div class="alert alert-danger" role="alert">
+          {% if error_message %}
+          <div class="alert alert-danger" role="alert">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             <span class="sr-only">Ошибка:</span>
             {{ error_message }}
-        </div>
-        {% endif %}
+          </div>
+          {% endif %}
 
-        <div class="form-group">
+          <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default">Сохранить</button>
+              <button type="submit" class="btn btn-primary">Сохранить</button>
             </div>
-        </div>
-    </form>
-    {% endif %}
+          </div>
+        </form>
+      </div>
+    </div>
+  {% endif %}
 
-
-    <h3>Домашнее задание</h3>
-
-    <table class="table">
-        <thead>
+    <div class="row well">
+      <div class="col-md-12">
+        <legend>Домашнее задание</legend>
+        <table class="table">
+          <thead>
             <tr>
-                <th>Дата</th>
-                <th>Учитель</th>
-                <th>Предмет</th>
-                <th>Задание</th>
-                <th>Файл</th>
-                <th></th>
+              <th>Дата</th>
+              <th>Учитель</th>
+              <th>Предмет</th>
+              <th>Задание</th>
+              <th>Файл</th>
+              <th></th>
             </tr>
-        </thead>
+          </thead>
 
-        <tbody>
+          <tbody>
             {% for hw in home_works %}
-            <tr>
+              <tr>
                 <th scope="row">{{ hw.created_at }}</th>
                 <td>{{ hw.created_by }}</td>
                 <td>{{ hw.discipline }}</td>
                 <td>{{ hw.description }}</td>
                 <td>
-                {% if hw.file %}
+                  {% if hw.file %}
                     <a href="{% url 'school:download_hw' schoolclass.school.id schoolclass.id hw.id %}">Скачать</a>
-                {% else %}
+                  {% else %}
                     &nbsp;
-                {% endif %}
+                  {% endif %}
                 </td>
                 <td>
-                {% if perms.schoolapp.delete_homework %}
-                    <a style="color: red;" onclick="if(!confirm('Уверены?')){ event.preventDefault(); return false; }" href="{% url 'school:remove_hw' schoolclass.school.id schoolclass.id hw.id %}">Удалить</a>
-                {% else %}
+                  {% if perms.schoolapp.delete_homework %}
+                    <a
+                        style="color: red;"
+                        onclick="if(!confirm('Уверены?')){ event.preventDefault(); return false; }"
+                        href="{% url 'school:remove_hw' schoolclass.school.id schoolclass.id hw.id %}"
+                    >
+                      Удалить
+                    </a>
+                  {% else %}
                     &nbsp;
-                {% endif %}
+                  {% endif %}
                 </td>
-            </tr>
+              </tr>
             {% endfor %}
-        </tbody>
-    </table>
+          </tbody>
+        </table>
+      </div>
+    </div>
 {% endblock %}

@@ -2,14 +2,37 @@
 
 {% block title %}Классы{% endblock %}
 
+{% block breadcrumbs %}
+  <li><a href="{% url 'school:index' %}">Школа</a></li>
+  <li><a href="{% url 'school:school' school.id %}">{{ school }}</a></li>
+  <li><a href="{% url 'school:classes' school.id %}">Классы</a></li>
+{% endblock %}
+
 {% block content %}
-    {% if schoolclass_list %}
+  {% if schoolclass_list %}
+    <div class="row">
+      <div class="col-md-12">
+        <legend>Список классов школы {{ school }}</legend>
+      </div>
+    </div>
+    <div class="row well">
+      <div class="col-md-12">
         <ul>
-        {% for cl in schoolclass_list %}
-            <li><a href="{% url 'school:schoolclass' cl.school.id cl.id %}">{{ cl }}</a></li>
-        {% endfor %}
+          {% for cl in schoolclass_list %}
+            <li>
+              <a href="{% url 'school:schoolclass' cl.school.id cl.id %}">
+                <h4>{{ cl }}</h4>
+              </a>
+            </li>
+          {% endfor %}
         </ul>
-    {% else %}
-        <p>Классов нет</p>
-    {% endif %}
+      </div>
+    </div>
+  {% else %}
+    <div class="row">
+      <div class="col-md-12">
+        <legend>Классов нет</legend>
+      </div>
+    </div>
+  {% endif %}
 {% endblock %}
