@@ -8,20 +8,20 @@
 {% endblock %}
 
 {% block content %}
-  <div class="row">
-    <div class="col-md-12">
-      <legend>{{ school.full_name }}</legend>
+  <div class="well">
+  {% if school.schoolclass_set.all %}
+    <div class="row">
+      <div class="col-md-12">
+        <legend>Список классов школы {{ school }}</legend>
+      </div>
     </div>
-  </div>
-  <div class="row well">
-    <div class="col-md-12">
-      <ul>
-        <li>
-          <a href="{% url 'school:classes' school.id %}">
-            <h4>Список классов школы {{ school }}</h4>
-          </a>
-        </li>
-      </ul>
+    {% include 'schoolapp/parts/class_list.html' with list=school.schoolclass_set.all %}
+  {% else %}
+    <div class="row">
+      <div class="col-md-12">
+        <legend>Классов нет</legend>
+      </div>
     </div>
+  {% endif %}
   </div>
 {% endblock %}

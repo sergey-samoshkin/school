@@ -1,0 +1,13 @@
+<div class="row well">
+  <div class="col-md-12">
+    <ul>
+      {% for cl in list %}
+        <li>
+          <a href="{% url 'school:schoolclass' cl.school.id cl.id %}">
+            <h4>{{ cl }}</h4>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>

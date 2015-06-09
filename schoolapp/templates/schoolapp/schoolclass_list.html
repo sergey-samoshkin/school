@@ -10,23 +10,13 @@
 
 {% block content %}
   {% if schoolclass_list %}
-    <div class="row">
-      <div class="col-md-12">
-        <legend>Список классов школы {{ school }}</legend>
+    <div class="well">
+      <div class="row">
+        <div class="col-md-12">
+          <legend>Список классов школы {{ school }}</legend>
+        </div>
       </div>
-    </div>
-    <div class="row well">
-      <div class="col-md-12">
-        <ul>
-          {% for cl in schoolclass_list %}
-            <li>
-              <a href="{% url 'school:schoolclass' cl.school.id cl.id %}">
-                <h4>{{ cl }}</h4>
-              </a>
-            </li>
-          {% endfor %}
-        </ul>
-      </div>
+      {% include 'schoolapp/parts/class_list.html' with list=schoolclass_list %}
     </div>
   {% else %}
     <div class="row">

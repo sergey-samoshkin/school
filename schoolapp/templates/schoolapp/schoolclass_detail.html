@@ -58,10 +58,9 @@
       </div>
     </div>
   {% endif %}
-
-    <div class="row well">
-      <div class="col-md-12">
-        <legend>Домашнее задание</legend>
+    {% load static %}
+    <div class="row">
+      <div class="col-md-8 well">
         <table class="table">
           <thead>
             <tr>
@@ -105,6 +104,9 @@
             {% endfor %}
           </tbody>
         </table>
+      </div>
+      <div class="col-md-4">
+        <img id="img_homework" class="img-responsive center-block" src="{% static 'images/hw.jpg' %}" alt="Домашнее задание" />
       </div>
     </div>
 {% endblock %}
